@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>File Complaint</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background:#f0f7f0;">
+
+<nav class="navbar bg-success text-white p-3">
+<div class="container">
+<a href="index.html" class="text-white text-decoration-none"><h4>🌾 Villagers E-Complaint Portal</h4></a>
+</div>
+</nav>
+
+<div class="container mt-4">
+<div class="card p-4 shadow" style="max-width:600px; margin:auto;">
+<h3 class="text-center text-success">📝 File New Complaint</h3>
+<p class="text-center text-muted">Fill this form, you will get a Complaint ID</p>
+
+<form id="complaintForm">
+<label class="mt-2">Your Name *</label>
+<input type="text" id="name" class="form-control" placeholder="e.g. Srushti Lamgunde" required>
+
+<label class="mt-2">Mobile Number *</label>
+<input type="tel" id="phone" class="form-control" placeholder="10-digit mobile" pattern="[0-9]{10}" required>
+
+<label class="mt-2">Village / Ward *</label>
+<input type="text" id="village" class="form-control" placeholder="e.g. Pimpri, Ward No. 3" required>
+
+<label class="mt-2">Complaint Type *</label>
+<select id="type" class="form-control" required>
+<option value="">-- Select --</option>
+<option>Water Problem</option>
+<option>Road / Pothole</option>
+<option>Street Light</option>
+<option>Drainage</option>
+<option>Sanitation / Garbage</option>
+<option>Other</option>
+</select>
+
+<label class="mt-2">Describe Problem *</label>
+<textarea id="desc" class="form-control" rows="3" placeholder="e.g. No water supply from 3 days in my area..." required></textarea>
+
+<label class="mt-2">Upload Photo (Optional)</label>
+<input type="file" id="photo" class="form-control" accept="image/*">
+
+<button type="submit" class="btn btn-success w-100 mt-4 btn-lg">Submit Complaint ✅</button>
+</form>
+
+<div id="successBox" class="alert alert-success mt-3 text-center" style="display:none;">
+<h4>✅ Complaint Submitted!</h4>
+<p>Your Complaint ID is:</p>
+<h2 id="showId" class="text-success"></h2>
+<p>Save this ID to track your complaint.</p>
+<a href="index.html" class="btn btn-dark btn-sm">Go to Home</a>
+<button onclick="copyId()" class="btn btn-warning btn-sm">Copy ID</button>
+</div>
+
+</div>
+</div>
+
+<script>
+document.getElementById('complaintForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  let id = 'VIL-' + Math.floor(1000 + Math.random()*9000);
+  let data = {
+    id: id,
+    name: document.getElementById('name').value,
+    phone: document.getElementById('phone').value,
+    village: document.getElementById('village').value,
+    type: document.getElementById('type').value,
+    desc: document.getElementById('desc').value,
+    status: 'Pending',
+    date: new Date().toLocaleDateString()
+  };
+  let all = JSON.parse(localStorage.getItem('complaints') || '[]');
+  all.push(data);
+  localStorage.setItem('complaints', JSON.stringify(all));
+  document.getElementById('showId').innerText = id;
+  document.getElementById('successBox').style.display = 'block';
+  document.getElementById('complaintForm').reset();
+  window.scrollTo(0,0);
+});
+function copyId(){
+  let id = document.getElementById('showId').innerText;
+  navigator.clipboard.writeText(id);
+  alert('Copied: ' + id);
+}
+</script>
+
+</body>
+</html>

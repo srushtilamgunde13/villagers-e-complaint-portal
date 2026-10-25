@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Track Complaint</title>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body style="background:#f0f7f0;">
+
+<nav class="navbar bg-success text-white p-3">
+<div class="container">
+<a href="index.html" class="text-white text-decoration-none"><h4>🌾 Villagers E-Complaint Portal</h4></a>
+</div>
+</nav>
+
+<div class="container mt-4">
+<div class="card p-4 shadow" style="max-width:600px; margin:auto;">
+<h3 class="text-center">🔍 Track Complaint</h3>
+<p class="text-center text-muted">Enter your Complaint ID - e.g. VIL-6023</p>
+
+<input type="text" id="searchId" class="form-control form-control-lg text-center" placeholder="VIL-XXXX">
+<button onclick="track()" class="btn btn-success w-100 mt-3 btn-lg">Check Status</button>
+
+<div id="result" class="mt-4" style="display:none;">
+<hr>
+<h5>Complaint ID: <span id="rId"></span></h5>
+<p><b>Name:</b> <span id="rName"></span></p>
+<p><b>Village:</b> <span id="rVillage"></span></p>
+<p><b>Type:</b> <span id="rType"></span></p>
+<p><b>Problem:</b> <span id="rDesc"></span></p>
+<p><b>Date:</b> <span id="rDate"></span></p>
+<p><b>Status:</b> <span id="rStatus" class="badge bg-warning text-dark p-2"></span></p>
+</div>
+
+<div id="notFound" class="alert alert-danger mt-3 text-center" style="display:none;">
+❌ No complaint found with this ID. Check ID and try again.
+</div>
+
+<a href="index.html" class="btn btn-dark w-100 mt-3">Back to Home</a>
+</div>
+</div>
+
+<script>
+function track(){
+  let search = document.getElementById('searchId').value.trim().toUpperCase();
+  let all = JSON.parse(localStorage.getItem('complaints') || '[]');
+  let found = all.find(c => c.id === search);
+  if(found){
+    document.getElementById('result').style.display='block';
+    document.getElementById('notFound').style.display='none';
+    document.getElementById('rId').innerText = found.id;
+    document.getElementById('rName').innerText = found.name;
+    document.getElementById('rVillage').innerText = found.village;
+    document.getElementById('rType').innerText = found.type;
+    document.getElementById('rDesc').innerText = found.desc;
+    document.getElementById('rDate').innerText = found.date;
+    document.getElementById('rStatus').innerText = found.status;
+  } else {
+    document.getElementById('result').style.display='none';
+    document.getElementById('notFound').style.display='block';
+  }
+}
+</script>
+
+</body>
+</html>
